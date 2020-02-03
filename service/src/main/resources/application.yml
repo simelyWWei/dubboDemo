@@ -1,0 +1,33 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/fileupload?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    username: root
+    password: 123456
+    #    url: jdbc:mysql://127.0.0.1:3306/pointquery?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    #    username: root
+    #    password: 123456
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 5
+      idle-timeout: 600000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+
+dubbo:
+  application:
+    name: dubbo-service
+  scan:
+    # Base packages to scan Dubbo Component: @org.apache.dubbo.config.annotation.Service
+    base-packages: com.mydubbo.service.impl
+  protocol: # Dubbo Protocol
+    name: dubbo
+    port: 20881
+  registry: # Dubbo Registry
+    address: 127.0.0.1:2181  #Ö±Á¬ÅäÎª N/A
+    protocol: zookeeper
+  provider:
+    filter: -exception
