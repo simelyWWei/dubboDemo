@@ -5,12 +5,13 @@ dubbo:
   application:
     name: consumer
   protocol:
+    id: dubbo
     name: dubbo
     port: 29080
-  registry:
-    address: 127.0.0.1:2181
-    protocol: zookeeper
-    register: false
   consumer:
-    timeout: 10000
     retries: 0
+    timeout: 5000
+  registry:
+    address: 172.16.21.74:8848?namespace=89c61f85-6223-48a3-9ff5-322e62a5e4cd
+    protocol: nacos
+    register: false

@@ -21,13 +21,14 @@ dubbo:
   application:
     name: dubbo-service
   scan:
-    # Base packages to scan Dubbo Component: @org.apache.dubbo.config.annotation.Service
-    base-packages: com.mydubbo.service.impl
+    base-packages: com.mydubbo.service.impl   # Base packages to scan Dubbo Component: @com.alibaba.dubbo.config.annotation.Service
   protocol: # Dubbo Protocol
     name: dubbo
-    port: 20881
+    port: 29081
   registry: # Dubbo Registry
-    address: 127.0.0.1:2181  #Ö±Á¬ÅäÎª N/A
-    protocol: zookeeper
+    address: 172.16.21.74:8848?namespace=89c61f85-6223-48a3-9ff5-322e62a5e4cd
+    protocol: nacos
   provider:
-    filter: -exception
+    delay: -1
+  consumer:
+    retries: 0

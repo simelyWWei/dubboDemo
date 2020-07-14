@@ -1,0 +1,3 @@
+#Dubbo Registry Cache
+#Sat May 23 17:25:48 GMT+08:00 2020
+com.mydubbo.api.api.DemoApi=empty\://172.16.36.3/com.mydubbo.api.api.DemoApi?application\=consumer&category\=providers&check\=false&dubbo\=2.0.2&interface\=com.mydubbo.api.api.DemoApi&lazy\=false&methods\=showDemo&pid\=472&qos.enable\=false&release\=2.7.4.1&retries\=0&side\=consumer&sticky\=false&timeout\=5000&timestamp\=1590225947888
