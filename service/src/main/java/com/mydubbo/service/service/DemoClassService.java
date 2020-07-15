@@ -9,11 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemoClassService extends ServiceImpl<DemoClassMapper, DemoClass> {
 
-    @Autowired
-    private DemoClassService demoClassService;
-
     public DemoClass getDemoOne() {
         Long id = 1231231231L;
-        return demoClassService.getById(id);
+        return this.getById(id);
     }
 }

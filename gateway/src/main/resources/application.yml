@@ -1,9 +1,9 @@
 server:
-  port: 8081
+  port: 9080
 
 dubbo:
   application:
-    name: consumer
+    name: dubbo-consumer-demo
   protocol:
     id: dubbo
     name: dubbo
