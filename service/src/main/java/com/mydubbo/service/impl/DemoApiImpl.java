@@ -22,4 +22,9 @@ public class DemoApiImpl implements DemoApi {
         demoClassVo.setParamA(demoClass.getParamA());
         return demoClassVo;
     }
+
+    @Override
+    public String hello() {
+        return "hello!";
+    }
 }

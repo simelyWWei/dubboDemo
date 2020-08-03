@@ -4,5 +4,7 @@ import com.mydubbo.api.VO.DemoClassVO;
 
 public interface DemoApi {
 
-    public DemoClassVO showDemo();
+    DemoClassVO showDemo();
+
+    String hello();
 }

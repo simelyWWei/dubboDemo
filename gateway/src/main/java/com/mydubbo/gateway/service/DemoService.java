@@ -14,5 +14,10 @@ public class DemoService {
 
     public DemoClassVO showDemoClass() {
         return demoApi.showDemo();
+//        return demoApi.showDemo();
+    }
+
+    public String hello() {
+        return "hello";
     }
 }
