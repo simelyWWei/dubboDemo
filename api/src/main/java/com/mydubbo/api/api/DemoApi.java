@@ -7,4 +7,6 @@ public interface DemoApi {
     DemoClassVO showDemo();
 
     String hello();
+
+    String hello2();
 }

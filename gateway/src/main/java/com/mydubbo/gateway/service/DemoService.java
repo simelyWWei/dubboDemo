@@ -20,4 +20,8 @@ public class DemoService {
     public String hello() {
         return "hello";
     }
+
+    public String hello2() {
+        return demoApi.hello2();
+    }
 }

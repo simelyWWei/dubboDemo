@@ -33,9 +33,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -90,11 +97,11 @@ public class DemoController {
     @SneakyThrows
     @PostConstruct
     public void initParamRule() {
-        Properties properties = new Properties();
+        /*Properties properties = new Properties();
         properties.put(PropertyKeyConst.SERVER_ADDR, remoteAddress);
         properties.put(PropertyKeyConst.NAMESPACE, NACOS_NAMESPACE_ID);
         log.info("加载规则源");
-        /*// 单节点模式添加规则源
+        // 单节点模式添加规则源
         ReadableDataSource<String, List<FlowRule>> flowRuleDataSource = new NacosDataSource<>(properties, groupId2, dataId2,
                 source -> JSON.parseObject(source, new TypeReference<List<FlowRule>>() {
                 }));
@@ -106,7 +113,7 @@ public class DemoController {
                 }));
 
         ParamFlowRuleManager.register2Property(paramFlowRuleDataSource.getProperty());*/
-
+/*
         // 集群模式添加规则源和客户端配置
         // 将当前模式置为客户端模式
         ClusterStateManager.applyState(ClusterStateManager.CLUSTER_CLIENT);
@@ -136,9 +143,9 @@ public class DemoController {
                 new NacosDataSource<>(properties, cluster_client_groupId, cluster_flow,
                         source -> JSON.parseObject(source, new TypeReference<List<FlowRule>>() {}));
         // 为集群客户端注册动态规则源
-        FlowRuleManager.register2Property(flowDs.getProperty());
-
-       /* // 添加普通规则
+        FlowRuleManager.register2Property(flowDs.getProperty());*/
+        /*
+        // 添加普通规则
         FlowRule rule = new FlowRule();
         rule.setResource("hello");
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
@@ -222,11 +229,12 @@ public class DemoController {
     @GetMapping("/hello2")
     public String test2() {
         String result = null;
-        try (Entry entry = SphU.entry("cluster-resource")) {
-            result = demoService.hello();
-        } catch (BlockException ex) {
-            System.out.println("blocked");
-        }
+//        try (Entry entry = SphU.entry("cluster-resource")) {
+//        try (Entry entry = SphU.entry("hello2")) {
+            result = demoService.hello2();
+//        } catch (BlockException ex) {
+//            System.out.println("blocked");
+//        }
         return result;
     }
 
@@ -273,6 +281,16 @@ public class DemoController {
             }
         }
         return result;
+    }
+    @GetMapping("/testConcurrency4")
+    public String testConcurrency4() {
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        for (int i = 0; i < 10; i++) {
+            TestThread4 myRunnable = new TestThread4(countDownLatch, i);
+            threadConfig.taskExecutor().execute(myRunnable);
+        }
+        countDownLatch.countDown();
+        return "success";
     }
 
     @GetMapping("/testConcurrency2")
@@ -416,6 +434,55 @@ public class DemoController {
             }
         }
     }
+
+    public class TestThread4 implements Runnable {
+
+        private final CountDownLatch startSignal4;
+        private int threadid;
+
+        public TestThread4(CountDownLatch startSignal, Integer threadid) {
+            super();
+            this.startSignal4 = startSignal;
+            this.threadid = threadid;
+        }
+
+        @Override
+        public void run() {
+            try {
+                startSignal4.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //实际测试操作
+            doWork4();
+        }
+
+        private void doWork4() {
+            String forObject = null;
+            try {
+                MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
+                requestBody.add("keyParamName","sendTelNo");
+                requestBody.add("intfcUriLast","userInnetmd5");
+                requestBody.add("paramValueJson","{\"sendTelNo\":\"A1B65BAE2FC545A04D4F912048AF4723\"}");
+                HttpHeaders requestHeaders = new HttpHeaders();
+                requestHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                requestHeaders.set("X-Forwarded-For","127.0.0.1");
+
+                HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
+                ResponseEntity<String> responseEntity = null;
+                try {
+                    responseEntity = restTemplate.postForEntity("http://10.126.138.76:9090/test/basicIntfc", requestEntity, String.class);
+                } catch (RestClientException e) {
+                    e.printStackTrace();
+                }
+                String body = responseEntity.getBody();
+                System.out.println("thread-"+threadid+"调用结果"+body);
+            } catch (Exception e) {
+                log.error("thread-{}调用异常", threadid, e);
+            }
+        }
+    }
+
 
     public static void main(String[] args) throws Exception {
         /*final String remoteAddress = "172.16.21.74:8848";

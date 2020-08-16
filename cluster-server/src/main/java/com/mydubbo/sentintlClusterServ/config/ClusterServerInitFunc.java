@@ -5,21 +5,18 @@ import com.alibaba.csp.sentinel.cluster.server.config.ClusterServerConfigManager
 import com.alibaba.csp.sentinel.cluster.server.config.ServerTransportConfig;
 import com.alibaba.csp.sentinel.datasource.ReadableDataSource;
 import com.alibaba.csp.sentinel.datasource.nacos.NacosDataSource;
+import com.alibaba.csp.sentinel.init.InitFunc;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.nacos.api.PropertyKeyConst;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-@Slf4j
-@Configuration
-public class ClusterServerConfig {
+public class ClusterServerInitFunc implements InitFunc {
+
     private static final String REMOTE_ADDRESS = "172.16.21.74:8848";
     private static final String NACOS_NAMESPACE_ID = "SENTINEL_GROUP";
     private static final String GROUP_ID = "89c61f85-6223-48a3-9ff5-322e62a5e4cd";
@@ -27,14 +24,16 @@ public class ClusterServerConfig {
     private static final String CLUSTER_TRANSPORT_DATA_ID = "cluster-server-transport-config";
     private static final String FLOW_POSTFIX = "-flow-rules";
 
-    static {
+    @Override
+    public void init() throws Exception {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.SERVER_ADDR, REMOTE_ADDRESS);
         properties.put(PropertyKeyConst.NAMESPACE, NACOS_NAMESPACE_ID);
 
         // 为 namespace 注册一个 SentinelProperty
         // 初始化一个配置 namespace 的 Nacos 数据源
-        log.info("加载namespace");
+//        log.info("加载namespace");
+        System.out.println("加载配置");
         ReadableDataSource<String, Set<String>> namespaceDs =
                 new NacosDataSource<>(properties, GROUP_ID,
                         CLUSTER_NAMESPACE_DATA_ID, source -> JSON.parseObject(source, new TypeReference<Set<String>>() {}));
@@ -46,9 +45,9 @@ public class ClusterServerConfig {
                 new NacosDataSource<>(properties,
                         GROUP_ID, CLUSTER_TRANSPORT_DATA_ID,
                         source -> JSON.parseObject(source, new TypeReference<ServerTransportConfig>() {}));
-        log.info("加载ServerTransportConfig");
+//        log.info("加载ServerTransportConfig");
         ClusterServerConfigManager.registerServerTransportProperty(transportConfigDs.getProperty());
-        
+
         // 注册动态规则源
         /**
          * token server 抽象出了命名空间（namespace）的概念，可以支持多个应用/服务，
@@ -59,17 +58,11 @@ public class ClusterServerConfig {
          *
          * 当集群限流服务端 namespace set 产生变更时，Sentinel 会自动针对新加入的 namespace 生成动态规则源并进行自动监听，并删除旧的不需要的规则源。
          */
-        log.info("加载Supplier");
+//        log.info("加载Supplier");
         ClusterFlowRuleManager.setPropertySupplier(namespace -> {
             ReadableDataSource<String, List<FlowRule>> ds =
                     new NacosDataSource<>(properties,GROUP_ID,namespace+FLOW_POSTFIX, source -> JSON.parseObject(source, new TypeReference<List<FlowRule>>() {}));
             return ds.getProperty();
         });
-        // ClusterFlowRuleManager 针对集群限流规则，ClusterParamFlowRuleManager 针对集群热点规则，配置方式类似。
     }
-
-    /*public static void main(String[] args) {
-        ServerTransportConfig serverTransportConfig = new ServerTransportConfig().setIdleSeconds(600).setPort(11111);
-        System.out.println(JSON.toJSONString(serverTransportConfig));
-    }*/
 }
