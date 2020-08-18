@@ -14,4 +14,10 @@ dubbo:
   registry:
     address: 172.16.21.74:8848?namespace=89c61f85-6223-48a3-9ff5-322e62a5e4cd
     protocol: nacos
-    register: false
+#    address: 127.0.0.1:2181
+#    protocol: zookeeper
+#    register: false
+nacos:
+  config:
+    namespace: 89c61f85-6223-48a3-9ff5-322e62a5e4cd
+    server-addr: 172.16.21.74:8848
