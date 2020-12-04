@@ -1,5 +1,6 @@
 server:
-  port: 9080
+  port: 9081
+
 dubbo:
 #  application:
 #    name: dubbo-consumer-demo
@@ -16,4 +17,4 @@ dubbo:
     register: false
 spring:
   application:
-    name: client1
+    name: client2

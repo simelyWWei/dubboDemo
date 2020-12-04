@@ -29,19 +29,12 @@ public class DemoApiImpl implements DemoApi {
 
     @Override
     public String hello() {
-        return "hello!";
+        return "hello1!";
     }
 
     @Override
     public String hello2() {
         log.info("come to impl.hello2");
-        String result;
-        try (Entry entry = SphU.entry("cluster-resource", EntryType.IN,1)) {
-            result = "hello2";
-        } catch (BlockException ex) {
-            System.out.println("blocked");
-            result = "blocked!";
-        }
-        return result;
+        return "hello2";
     }
 }

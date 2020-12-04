@@ -20,6 +20,7 @@
         <module>service</module>
         <module>gateway</module>
         <module>cluster-server</module>
+        <module>gatewayii</module>
     </modules>
 
     <properties>

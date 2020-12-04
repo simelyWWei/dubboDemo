@@ -1,4 +1,4 @@
-package com.mydubbo.service.entity;
+package com.mydubbo.demo.gatewayii.entity;
 
 import lombok.Data;
 

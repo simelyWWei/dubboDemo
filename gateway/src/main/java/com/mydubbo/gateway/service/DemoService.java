@@ -18,10 +18,11 @@ public class DemoService {
     }
 
     public String hello() {
-        return "hello";
+        return demoApi.hello();
     }
 
     public String hello2() {
+        // rpc调用
         return demoApi.hello2();
     }
 }
