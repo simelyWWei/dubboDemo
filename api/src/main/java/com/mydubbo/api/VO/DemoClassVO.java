@@ -9,4 +9,5 @@ public class DemoClassVO implements Serializable {
 
     private String paramA;
 
+    private String testConfigStr;
 }

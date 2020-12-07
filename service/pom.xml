@@ -56,11 +56,10 @@
             <artifactId>nacos-config-spring-boot-starter</artifactId>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-dependencies-zookeeper</artifactId>
-            <type>pom</type>
-        </dependency>
+            <artifactId>dubbo-metadata-report-redis</artifactId>
+        </dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>

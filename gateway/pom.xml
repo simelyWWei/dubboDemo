@@ -63,11 +63,9 @@
             <groupId>com.alibaba.boot</groupId>
             <artifactId>nacos-config-spring-boot-actuator</artifactId>
         </dependency>
-
         <!--<dependency>
             <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-dependencies-zookeeper</artifactId>
-            <type>pom</type>
+            <artifactId>dubbo-metadata-report-redis</artifactId>
         </dependency>-->
     </dependencies>
 

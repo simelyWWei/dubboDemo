@@ -8,4 +8,6 @@ public class DemoClass {
     private Long id;
 
     private String paramA;
+
+    private transient String paramC;
 }
