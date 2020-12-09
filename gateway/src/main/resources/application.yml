@@ -4,6 +4,7 @@ server:
 dubbo:
   application:
     name: consumer
+    metadata-type: local
   protocol:
     id: dubbo
     name: dubbo
@@ -18,4 +19,5 @@ dubbo:
 #    simplified: true
 #  metadata-report:
 #    address: redis://127.0.0.1:6379
-
+#  config-center: # 配置中心
+#    address: nacos://127.0.0.1:8848?namespace=my002

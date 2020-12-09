@@ -20,12 +20,13 @@ spring:
 dubbo:
   application:
     name: dubbo-service
+    metadata-type: local
   scan:
     base-packages: com.mydubbo.service.impl   # Base packages to scan Dubbo Component: @com.alibaba.dubbo.config.annotation.Service
   protocol: # Dubbo Protocol
     name: dubbo
     port: 29081
-  registry: # Dubbo Registry
+  registry: # 注册中心
     address: 127.0.0.1:8848?namespace=my001
 #    address: 172.16.21.74:8848?namespace=89c61f85-6223-48a3-9ff5-322e62a5e4cd
     protocol: nacos
@@ -36,11 +37,12 @@ dubbo:
   consumer:
     retries: 0
 #  config-center:
+#    highest-priority: false
 #    address: nacos://127.0.0.1:8848?namespace=my002
-#  metadata-report:
+#  metadata-report: # 元数据中心
 #    address: redis://127.0.0.1:6379
 
 nacos:
   config:
     server-addr: 127.0.0.1:8848
-    namespace: my001
+    namespace: my002

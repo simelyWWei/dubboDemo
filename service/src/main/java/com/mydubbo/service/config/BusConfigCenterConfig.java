@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @EnableNacosConfig
-public class ConfigCenterConfig {
+public class BusConfigCenterConfig {
 
     public static final String TEST_CONFIG = "test_config";
 
