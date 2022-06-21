@@ -31,7 +31,7 @@
         <commons-lang3.version>3.7</commons-lang3.version>
         <commons-collection4.version>4.2</commons-collection4.version>
         <lombok.version>1.18.10</lombok.version>
-        <mysql-connector-java.version>8.0.11</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
     </properties>
 
